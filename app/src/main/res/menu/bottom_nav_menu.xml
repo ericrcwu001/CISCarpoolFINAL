@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/person"
+        android:enabled="true"
+        android:icon="@drawable/ic_person_foreground"
+        android:iconTint="@color/mainColour"
+        android:title="Person"
+        />
+    <item
+        android:id="@+id/carpool"
+        android:enabled="true"
+        android:icon="@drawable/ic_carpool_foreground"
+        android:iconTint="@color/mainColour"
+        android:title="Carpool" />
+    <item
+        android:id="@+id/leaderboard"
+        android:enabled="true"
+        android:icon="@drawable/ic_leaderboard_foreground"
+        android:iconTint="@color/mainColour"
+        android:title="Leaderboard" />
+
+
+</menu>

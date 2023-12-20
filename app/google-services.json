@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1041285919985",
+    "project_id": "cis-carpool-fceba",
+    "storage_bucket": "cis-carpool-fceba.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1041285919985:android:a28b338d61eb5ad1ac2550",
+        "android_client_info": {
+          "package_name": "com.example.ciscarpool"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1041285919985-otafm54nh4r3uf0b9jb1slj32ptrlaa3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDnKbz8DIg_-Zk0MFWQ4xeWv-AurNWiero"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1041285919985-otafm54nh4r3uf0b9jb1slj32ptrlaa3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

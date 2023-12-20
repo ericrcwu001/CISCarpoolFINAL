@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    android:gravity="center"
+    android:background="@color/white"
+    tools:context=".activities.EntryActivity">
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="156dp"
+        android:layout_height="182dp"
+        android:layout_marginBottom="15dp"
+        android:scaleX="1.2"
+        android:scaleY="1.2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/logo" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/spotify_font_bold"
+        android:text="@string/appName"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:gravity="center"
+        android:textColor="@color/mainColour"
+        android:textSize="70sp"
+        android:layout_marginBottom="15dp"/>
+
+    <Button
+        android:id="@+id/signup"
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/spotify_font_bold"
+
+        android:paddingVertical="8dp"
+        android:text="Register"
+        android:textColor="@color/mainColour"
+        android:textSize="20sp"
+        app:strokeColor="@color/mainColour"
+        app:strokeWidth="2dp"/>
+
+    <Button
+        android:id="@+id/login"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:text="Log In"
+        style="?attr/materialButtonOutlinedStyle"
+
+        app:strokeColor="@color/mainColour"
+        app:strokeWidth="2dp"
+        android:textColor="@color/mainColour"
+        android:fontFamily="@font/spotify_font_bold"
+        android:textSize="20sp"
+        android:paddingVertical="8dp"/>
+
+    <Button
+        android:id="@+id/continueWithGoogle"
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/spotify_font_bold"
+        android:paddingVertical="8dp"
+
+        android:onClick="continueWithGoogle"
+
+        android:text="Continue with Google"
+        android:textColor="@color/mainColour"
+        android:textSize="20sp"
+        app:icon="@drawable/googleg_standard_color_18"
+        app:iconTint="@color/mainColour"
+        app:strokeColor="@color/mainColour"
+        app:strokeWidth="2dp" />
+    <TextView
+        android:id="@+id/googleEmailError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:text=""
+
+        android:textColor="@color/red"
+        android:textAlignment="center"
+        android:textSize="15sp"
+        />
+
+
+
+</LinearLayout>

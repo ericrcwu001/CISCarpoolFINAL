@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    android:padding="15dp"
+    android:background="@color/white"
+    tools:context=".activities.RegisterActivity">
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/backBtn"
+        android:onClick="backBtnOnClick"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:strokeColor="@color/mainColour"
+        android:backgroundTint="#FFFFFF"
+        app:strokeWidth="2dp"
+        android:paddingHorizontal="15dp"
+
+        app:icon="@drawable/left"
+        app:iconTint="@color/mainColour"
+        app:iconGravity="start"
+
+        android:text="Back"
+        android:textColor="@color/mainColour"
+        android:textSize="20sp"
+        android:fontFamily="@font/spotify_font"
+
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintVertical_bias="0"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Register"
+            android:fontFamily="@font/spotify_font_bold"
+            android:textSize="40sp"
+            android:textColor="@color/mainColour"
+            android:paddingBottom="15dp"/>
+        
+        <LinearLayout
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+            <EditText
+                android:id="@+id/firstName"
+                android:layout_width="170dp"
+                android:layout_height="70dp"
+
+                android:hint="First Name"
+                android:inputType="textEmailAddress"
+                android:textSize="20sp"
+                android:textColor="@color/mainColourDeeper"
+                android:textColorHint="@color/mainColourDeeper"
+                android:fontFamily="@font/spotify_font_bold"
+                android:drawablePadding="15dp"
+                android:drawableLeft="@drawable/user"
+                />
+
+            <TextView
+                android:layout_width="10dp"
+                android:layout_height="match_parent"/>
+
+            <EditText
+                android:id="@+id/lastName"
+                android:layout_width="170dp"
+                android:layout_height="70dp"
+
+                android:hint="Last Name"
+                android:inputType="textEmailAddress"
+                android:textColor="@color/mainColourDeeper"
+                android:textSize="20sp"
+                android:textColorHint="@color/mainColourDeeper"
+                android:fontFamily="@font/spotify_font_bold"
+                android:drawablePadding="15dp"
+                android:drawableLeft="@drawable/user"
+                />
+        </LinearLayout>
+
+        <Spinner
+            android:id="@+id/roleChoices"
+            android:layout_width="350dp"
+            android:layout_height="70dp"
+
+            style="@style/Base.Widget.AppCompat.Spinner.Underlined"
+            android:spinnerMode="dropdown"/>
+
+        <EditText
+            android:id="@+id/emailAddress"
+            android:layout_width="350dp"
+            android:layout_height="70dp"
+
+            android:textColor="@color/mainColourDeeper"
+            android:hint="Email Address"
+            android:inputType="textEmailAddress"
+            android:textSize="20sp"
+            android:textColorHint="@color/mainColourDeeper"
+            android:fontFamily="@font/spotify_font_bold"
+            android:drawablePadding="15dp"
+            android:drawableLeft="@drawable/mail"
+            />
+
+        <EditText
+            android:id="@+id/password"
+            android:layout_width="350dp"
+            android:layout_height="70dp"
+
+            android:textColor="@color/mainColourDeeper"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:textSize="20sp"
+            android:textColorHint="@color/mainColourDeeper"
+            android:fontFamily="@font/spotify_font_bold"
+            android:drawablePadding="15dp"
+
+            android:drawableLeft="@drawable/pass"
+            />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/uploadBtn"
+            android:layout_width="350dp"
+            android:layout_height="70dp"
+            android:layout_marginTop="5dp"
+            android:backgroundTint="@android:color/transparent"
+            android:drawableLeft="@drawable/share"
+            android:drawableRight="@drawable/transparent"
+
+            android:fontFamily="@font/spotify_font_bold"
+            android:onClick="uploadImg"
+            android:text="Upload Image"
+
+            android:textAlignment="center"
+
+            android:textColor="@color/mainColour"
+            android:textSize="20sp"
+            app:strokeColor="@color/mainColour"
+            app:strokeWidth="2dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="350dp"
+            android:layout_height="70dp"
+            android:backgroundTint="@color/mainColour"
+
+            android:onClick="register"
+
+            android:text="REGISTER"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:fontFamily="@font/spotify_font_bold"/>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

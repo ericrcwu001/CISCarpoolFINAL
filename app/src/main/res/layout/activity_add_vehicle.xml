@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    android:padding="15dp"
+    android:background="@color/white"
+    tools:context=".activities.AddVehicleActivity">
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/skipBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:strokeColor="@color/mainColour"
+        android:backgroundTint="#FFFFFF"
+        app:strokeWidth="2dp"
+        android:paddingHorizontal="15dp"
+
+        app:icon="@drawable/right"
+        app:iconTint="@color/mainColour"
+        app:iconGravity="end"
+
+        android:onClick="skip"
+
+        android:text="Skip"
+        android:textColor="@color/mainColour"
+        android:textSize="20sp"
+        android:fontFamily="@font/spotify_font"
+
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintHorizontal_bias="1"
+        app:layout_constraintVertical_bias="1"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_marginBottom="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Vehicle\nRegistration"
+            android:fontFamily="@font/spotify_font_bold"
+            android:textSize="40sp"
+            android:textColor="@color/mainColour"
+            android:gravity="center"
+            android:paddingBottom="15dp"/>
+
+        <EditText
+            android:id="@+id/carModel"
+            android:layout_width="350dp"
+            android:layout_height="70dp"
+
+            android:hint="Car Model"
+            android:inputType="text"
+            android:textSize="20sp"
+            android:textColor="@color/mainColourDeeper"
+            android:textColorHint="@color/mainColourDeeper"
+            android:fontFamily="@font/spotify_font_bold"
+            android:drawablePadding="15dp"
+
+            android:drawableLeft="@drawable/car"
+            />
+
+        <EditText
+            android:id="@+id/seatingCapacity"
+            android:layout_width="350dp"
+            android:layout_height="70dp"
+
+            android:hint="Spare Capacity (1-10)"
+            android:inputType="number"
+            android:textSize="20sp"
+            android:textColor="@color/mainColourDeeper"
+            android:textColorHint="@color/mainColourDeeper"
+            android:fontFamily="@font/spotify_font_bold"
+            android:drawablePadding="15dp"
+
+            android:drawableLeft="@drawable/car_seat"
+            />
+
+        <Spinner
+            android:id="@+id/vehicleChoices"
+            android:layout_width="350dp"
+            android:layout_height="70dp"
+
+            style="@style/Base.Widget.AppCompat.Spinner.Underlined"
+            android:spinnerMode="dropdown"/>
+
+        <EditText
+            android:id="@+id/pricePerRide"
+            android:layout_width="350dp"
+            android:layout_height="70dp"
+
+            android:hint="Price Charged per Ride (0-10)"
+            android:inputType="numberDecimal"
+            android:textSize="20sp"
+            android:textColor="@color/mainColourDeeper"
+            android:textColorHint="@color/mainColourDeeper"
+            android:fontFamily="@font/spotify_font_bold"
+            android:drawablePadding="15dp"
+
+            android:drawableLeft="@drawable/dollar"
+            />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/uploadBtn"
+            android:layout_width="350dp"
+            android:layout_height="70dp"
+            android:layout_marginTop="5dp"
+            android:backgroundTint="@android:color/transparent"
+            android:drawableLeft="@drawable/share"
+            android:drawableRight="@drawable/transparent"
+
+            android:fontFamily="@font/spotify_font_bold"
+            android:onClick="uploadImg"
+            android:text="Upload Image"
+
+            android:textAlignment="center"
+
+            android:textColor="@color/mainColour"
+            android:textSize="20sp"
+            app:strokeColor="@color/mainColour"
+            app:strokeWidth="2dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/addVehicleBtn"
+            android:layout_marginTop="5dp"
+            android:layout_width="350dp"
+            android:layout_height="70dp"
+            android:backgroundTint="@color/mainColour"
+
+            android:onClick="addVehicle"
+
+            android:text="Add Vehicle"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:fontFamily="@font/spotify_font_bold"/>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

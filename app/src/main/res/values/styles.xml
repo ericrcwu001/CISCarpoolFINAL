@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="BottomNavigation">
+        <item name="android:background">@color/white</item>
+        <item name="itemIconTint">@color/mainColour</item>
+        <item name="itemTextColor">@color/mainColour</item>
+        <item name="colorPrimary">@color/mainColour</item>
+        <item name="colorOnPrimary">@color/mainColourDeeper</item>
+    </style>
+    <style name="Theme.BottomNavigationView.ActiveIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <item name="android:color">#f1bfd1</item>
+    </style>
+
+</resources>

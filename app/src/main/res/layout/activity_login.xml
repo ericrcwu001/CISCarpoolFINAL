@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    android:padding="15dp"
+    android:background="@color/white"
+    tools:context=".activities.LoginActivity">
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/backBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:strokeColor="@color/mainColour"
+        android:backgroundTint="#FFFFFF"
+        app:strokeWidth="2dp"
+        android:paddingHorizontal="15dp"
+
+        app:icon="@drawable/left"
+        app:iconTint="@color/mainColour"
+        app:iconGravity="start"
+
+        android:onClick="backBtnOnClick"
+
+        android:text="Back"
+        android:textColor="@color/mainColour"
+        android:textSize="20sp"
+        android:fontFamily="@font/spotify_font"
+
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintVertical_bias="0"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Login"
+            android:fontFamily="@font/spotify_font_bold"
+            android:textSize="40sp"
+            android:textColor="@color/mainColour"
+            android:paddingBottom="15dp"/>
+
+        <EditText
+            android:id="@+id/emailAddress"
+            android:layout_width="350dp"
+            android:layout_height="70dp"
+
+            android:hint="Email Address"
+            android:inputType="textEmailAddress"
+            android:textSize="20sp"
+            android:textColorHint="@color/mainColourDeeper"
+            android:fontFamily="@font/spotify_font_bold"
+            android:drawablePadding="15dp"
+            android:drawableLeft="@drawable/mail"
+            />
+
+        <EditText
+            android:id="@+id/password"
+            android:layout_width="350dp"
+            android:layout_height="70dp"
+
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:textSize="20sp"
+            android:textColorHint="@color/mainColourDeeper"
+            android:fontFamily="@font/spotify_font_bold"
+            android:drawablePadding="15dp"
+
+            android:drawableLeft="@drawable/pass"
+            />
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_marginTop="20dp"
+            android:layout_width="350dp"
+            android:layout_height="70dp"
+            android:backgroundTint="@color/mainColour"
+
+            android:onClick="login"
+
+            android:text="LOGIN"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:fontFamily="@font/spotify_font_bold"/>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
