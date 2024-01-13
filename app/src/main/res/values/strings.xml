@@ -2,8 +2,8 @@
     <string name="app_name">CISCarpool</string>
     <string name="appName">CIS\nCarpool</string>
     <string name="default_web_client_id">1041285919985-otafm54nh4r3uf0b9jb1slj32ptrlaa3.apps.googleusercontent.com</string>
-    <string name="MAPS_APP_API_KEY" value="${MAPS_APP_API_KEY}"/>
-    <string name="MAPS_WEB_API_KEY" value="${MAPS_WEB_API_KEY}"/>
+    <string name="MAPS_APP_API_KEY"  value="${MAPS_APP_API_KEY}"/>
+    <string name="MAPS_WEB_API_KEY"  value="${MAPS_WEB_API_KEY}"/>
     <string name="title_activity_test">test</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
