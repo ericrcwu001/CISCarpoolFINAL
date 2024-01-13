@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/reservationsTemplate"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="10dp"
+    android:paddingVertical="10dp"
+    android:background="@drawable/rides_border"
+    tools:context=".fragments.CarpoolFragment"
+    >
+
+    <TextView
+        android:id="@+id/carModel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxWidth="200dp"
+        android:fontFamily="@font/spotify_font_bold"
+        android:gravity="start"
+        android:text="Car name"
+        android:textColor="@color/mainColour"
+        android:textSize="20sp"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/typeOfVehicle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/spotify_font"
+        android:drawablePadding="5dp"
+        android:gravity="start"
+        android:text="Vehicle Type"
+        android:textColor="@color/mainColour"
+        android:textSize="15sp"
+        android:paddingEnd="5dp"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/carModel"
+        app:drawableTint="@color/mainColour"/>
+
+    <TextView
+        android:id="@+id/ownedBy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/spotify_font"
+        android:drawablePadding="5dp"
+        android:gravity="start"
+        android:text="Owned by xxx"
+        android:textColor="@color/mainColour"
+        android:textSize="15sp"
+        android:paddingEnd="5dp"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/typeOfVehicle"
+        app:drawableTint="@color/mainColour"/>
+
+    <TextView
+        android:id="@+id/distanceFromUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/spotify_font"
+        android:drawablePadding="2dp"
+        android:gravity="start"
+        android:text="0.5km"
+        android:textColor="@color/mainColour"
+        android:textSize="15sp"
+        android:paddingEnd="2dp"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ownedBy"
+        app:drawableStartCompat="@drawable/location_smaller"
+        app:drawableEndCompat="@drawable/dot_smaller"
+        app:drawableTint="@color/mainColour"/>
+
+    <TextView
+        android:id="@+id/basePrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/spotify_font"
+        android:drawablePadding="2dp"
+        android:gravity="start"
+        android:text="9.00"
+        android:textColor="@color/mainColour"
+        android:textSize="15sp"
+        android:paddingEnd="2dp"
+
+
+        app:layout_constraintStart_toEndOf="@id/distanceFromUser"
+        app:layout_constraintTop_toBottomOf="@id/ownedBy"
+        app:drawableStartCompat="@drawable/dollar_smaller"
+        app:drawableEndCompat="@drawable/dot_smaller"
+        app:drawableTint="@color/mainColour" />
+
+    <TextView
+        android:id="@+id/capacity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/spotify_font"
+        android:drawablePadding="2dp"
+        android:gravity="start"
+        android:text="5 left"
+        android:textColor="@color/mainColour"
+        android:textSize="15sp"
+
+
+        app:layout_constraintStart_toEndOf="@id/basePrice"
+        app:layout_constraintTop_toBottomOf="@id/ownedBy"
+        app:drawableStartCompat="@drawable/car_seat_smaller"
+        app:drawableTint="@color/mainColour" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/viewMoreBtn"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        app:strokeColor="@color/mainColour"
+        app:strokeWidth="2dp"
+        app:cornerRadius="20dp"
+        android:layout_width="110dp"
+        android:layout_height="50dp"
+
+        android:text="View more"
+        android:textColor="@color/mainColour"
+        android:textSize="13sp"
+        android:textAllCaps="false"
+        android:fontFamily="@font/spotify_font_bold"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/reserveRideBtn"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/reserveRideBtn"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:backgroundTint="@color/mainColour"
+        app:cornerRadius="20dp"
+        android:layout_width="110dp"
+        android:layout_height="50dp"
+
+        android:text="Reserve"
+        android:textColor="@color/white"
+        android:textSize="13sp"
+        android:textAllCaps="false"
+        android:fontFamily="@font/spotify_font_bold"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/viewMoreBtn" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -30,6 +30,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class EntryActivity extends AppCompatActivity {
     private Button signup, login;
@@ -153,7 +154,7 @@ public class EntryActivity extends AppCompatActivity {
                                             User user2 = new User(mAuth.getCurrentUser().getUid().toString(),
                                                     account.getGivenName(), account.getFamilyName(),
                                                     account.getEmail(), getRoleFromEmail(account.getEmail()),
-                                                    new ArrayList<>(), account.getPhotoUrl().toString(), new ArrayList<>());
+                                                    new ArrayList<>(), account.getPhotoUrl().toString(), new ArrayList<>(), 0);
 
                                             firestore.collection("users").document(user2.getuId()).set(user2);
                                         }
@@ -183,7 +184,7 @@ public class EntryActivity extends AppCompatActivity {
         Intent intent = new Intent(EntryActivity.this, MainViewActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
-//        overridePendingTransition(R.anim.slide_from_right,R.anim.slide_to_left);
+        overridePendingTransition(R.anim.slide_from_right,R.anim.slide_to_left);
         finish();
     }
 

@@ -1,5 +1,6 @@
 package com.example.ciscarpool.classes;
 import java.util.ArrayList;
+import java.util.Map;
 
 public class User {
     private static String currentUser = null;
@@ -11,10 +12,11 @@ public class User {
     private ArrayList<String> ownedVehicles;
     private String uriString;
     private ArrayList<String> reservedRides;
+    private double kiloCarbonSaved;
 
     public User() {}
 
-    public User(String uId, String firstName, String lastName, String email, String userType, ArrayList<String> ownedVehicles, String uriString, ArrayList<String> reservedRides) {
+    public User(String uId, String firstName, String lastName, String email, String userType, ArrayList<String> ownedVehicles, String uriString, ArrayList<String> reservedRides, double kiloCarbonSaved) {
         this.uId = uId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -23,14 +25,7 @@ public class User {
         this.ownedVehicles = ownedVehicles;
         this.uriString = uriString;
         this.reservedRides = reservedRides;
-    }
-
-    public String getUriString() {
-        return uriString;
-    }
-
-    public void setUriString(String uriString) {
-        this.uriString = uriString;
+        this.kiloCarbonSaved = kiloCarbonSaved;
     }
 
     public static String getCurrentUser() {
@@ -87,5 +82,29 @@ public class User {
 
     public void setOwnedVehicles(ArrayList<String> ownedVehicles) {
         this.ownedVehicles = ownedVehicles;
+    }
+
+    public String getUriString() {
+        return uriString;
+    }
+
+    public void setUriString(String uriString) {
+        this.uriString = uriString;
+    }
+
+    public ArrayList<String> getReservedRides() {
+        return reservedRides;
+    }
+
+    public void setReservedRides(ArrayList<String> reservedRides) {
+        this.reservedRides = reservedRides;
+    }
+
+    public double getKiloCarbonSaved() {
+        return kiloCarbonSaved;
+    }
+
+    public void setKiloCarbonSaved(double kiloCarbonSaved) {
+        this.kiloCarbonSaved = kiloCarbonSaved;
     }
 }

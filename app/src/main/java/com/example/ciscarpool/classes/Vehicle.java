@@ -12,10 +12,13 @@ public class Vehicle {
     protected double basePrice;
     protected String image;
 
+    protected ArrayList<Double> location;
+    protected double kiloCarbonSavedPerRidePerKm;
+
     public Vehicle() {
     }
 
-    public Vehicle(String owner, String model, int capacity, String vehicleID, ArrayList<String> ridersUIDs, boolean open, double basePrice, String image) {
+    public Vehicle(String owner, String model, int capacity, String vehicleID, ArrayList<String> ridersUIDs, boolean open, double basePrice, String image, ArrayList<Double> location) {
         this.owner = owner;
         this.model = model;
         this.capacity = capacity;
@@ -24,6 +27,28 @@ public class Vehicle {
         this.open = open;
         this.basePrice = basePrice;
         this.image = image;
+        this.location = location;
+    }
+
+    public Vehicle(String owner, String model, int capacity, String vehicleID, ArrayList<String> ridersUIDs, boolean open, double basePrice, String image, ArrayList<Double> location, double kiloCarbonSavedPerRidePerKm) {
+        this.owner = owner;
+        this.model = model;
+        this.capacity = capacity;
+        this.vehicleID = vehicleID;
+        this.ridersUIDs = ridersUIDs;
+        this.open = open;
+        this.basePrice = basePrice;
+        this.image = image;
+        this.location = location;
+        this.kiloCarbonSavedPerRidePerKm = kiloCarbonSavedPerRidePerKm;
+    }
+
+    public ArrayList<Double> getLocation() {
+        return location;
+    }
+
+    public void setLocation(ArrayList<Double> location) {
+        this.location = location;
     }
 
     public String getImage() {
@@ -88,5 +113,11 @@ public class Vehicle {
 
     public void setBasePrice(double basePrice) {
         this.basePrice = basePrice;
+    }
+    public double getKiloCarbonSavedPerRidePerKm() {
+        return kiloCarbonSavedPerRidePerKm;
+    }
+    public void setKiloCarbonSavedPerRidePerKm(double kiloCarbonSavedPerRidePerKm) {
+        this.kiloCarbonSavedPerRidePerKm = kiloCarbonSavedPerRidePerKm;
     }
 }

@@ -1,10 +1,6 @@
 package com.example.ciscarpool.fragments;
 
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.media.Image;
+import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -13,8 +9,8 @@ import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
-import android.provider.MediaStore;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
@@ -22,22 +18,16 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.bitmap.CenterCrop;
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import jp.wasabeef.glide.transformations.BlurTransformation;
 import com.example.ciscarpool.R;
-import com.example.ciscarpool.activities.EntryActivity;
-import com.example.ciscarpool.activities.MainViewActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -45,20 +35,21 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class PersonFragment extends Fragment {
+    private FirebaseAuth mAuth;
     private TextView personRole, personName;
     private CircleImageView profile_image;
     private LinearLayout vehiclesView, reservationsView;
+    private Activity activity;
+    private FragmentManager fragmentManager;
 
     private FirebaseFirestore firestore;
-    private FirebaseAuth mAuth;
+    private DocumentSnapshot documentSnapshot;
     public PersonFragment() {
         // Required empty public constructor
     }
@@ -76,11 +67,14 @@ public class PersonFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        activity = getActivity();
+        fragmentManager = getParentFragmentManager();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_person, container, false);
     }
@@ -88,7 +82,7 @@ public class PersonFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if (getActivity() != null && isAdded()) {
+        if (activity != null && isAdded()) {
             elementsSetUp();
 
             DocumentReference docRef = firestore.collection("users")
@@ -113,7 +107,7 @@ public class PersonFragment extends Fragment {
                                 vehiclesView.addView(cl, 0);
                             } else {
                                 for (String vehicleUID : vehicles) {
-                                    ConstraintLayout cl = vehicleCL(createDefaultConstraintLayout(), vehicleUID);
+                                    ConstraintLayout cl = vehicleCL(createDefaultConstraintLayout(), vehicleUID, true);
                                     vehiclesView.addView(cl, 0);
                                 }
                             }
@@ -125,7 +119,7 @@ public class PersonFragment extends Fragment {
                                 reservationsView.addView(cl, 0);
                             } else {
                                 for (String vehicleUID : reservations) {
-                                    ConstraintLayout cl = vehicleCL(createDefaultConstraintLayout(), vehicleUID);
+                                    ConstraintLayout cl = vehicleCL(createDefaultConstraintLayout(), vehicleUID, false);
                                     reservationsView.addView(cl, 0);
                                 }
                             }
@@ -141,7 +135,7 @@ public class PersonFragment extends Fragment {
 
             // getting profile picture and putting it in the circularImageView
             if (mAuth.getCurrentUser().getProviderId().equals("google.com")) {
-                GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(getActivity());
+                GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(activity);
                 Uri personPhoto = account.getPhotoUrl();
                 Glide.with(this).load(personPhoto)
                         .into((ImageView) getView().findViewById(R.id.profile_image));
@@ -149,12 +143,12 @@ public class PersonFragment extends Fragment {
                 docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
+                        if (task.isSuccessful() && getActivity() != null && isAdded()) {
                             DocumentSnapshot document = task.getResult();
                             if (document.exists()) {
 
                                 Uri personPhoto = Uri.parse(document.getString("uriString"));
-                                Glide.with(getActivity()).load(personPhoto)
+                                Glide.with(activity).load(personPhoto)
                                         .into((ImageView) getView().findViewById(R.id.profile_image));
 
                             } else {
@@ -170,7 +164,7 @@ public class PersonFragment extends Fragment {
     }
 
     private ConstraintLayout addTextToCL(ConstraintLayout defaultConstraintLayout, String text) {
-        TextView tv = new TextView(getActivity());
+        TextView tv = new TextView(activity);
         tv.setText(text);
         tv.setPadding(dpToPx(15),dpToPx(15),dpToPx(15),dpToPx(15));
         textViewFormat(tv);
@@ -188,7 +182,7 @@ public class PersonFragment extends Fragment {
         return defaultConstraintLayout;
     }
 
-    private ConstraintLayout vehicleCL(ConstraintLayout cl, String vehicleUID) {
+    private ConstraintLayout vehicleCL(ConstraintLayout cl, String vehicleUID, boolean yourVehicles) {
         DocumentReference docRef = firestore.collection("vehicles")
                 .document(vehicleUID);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -197,14 +191,47 @@ public class PersonFragment extends Fragment {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
+                        cl.setClickable(true);
+                        if (yourVehicles) cl.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                FragmentManager fm = fragmentManager;
+                                Fragment frag = new VehicleSchoolMapsFragment();
+                                Bundle bundle = new Bundle();
+                                bundle.putString("vehicle", vehicleUID);
+                                bundle.putString("user", mAuth.getCurrentUser().getUid().toString());
+                                bundle.putBoolean("yourVehicles", true);
+                                frag.setArguments(bundle);
+                                fm.beginTransaction()
+                                        .replace(R.id.flFragment, frag)
+                                        .commit();
+                            }
+                        });
+                        else cl.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                FragmentManager fm = fragmentManager;
+                                Fragment frag = new VehicleSchoolMapsFragment();
+                                Bundle bundle = new Bundle();
+                                bundle.putString("vehicle", vehicleUID);
+                                bundle.putString("user", mAuth.getCurrentUser().getUid().toString());
+                                bundle.putBoolean("yourReservations", true);
+                                frag.setArguments(bundle);
+                                fm.beginTransaction()
+                                        .replace(R.id.flFragment, frag)
+                                        .commit();
+                            }
+                        });
+
+
                         // Image of Car
                         Uri uri = Uri.parse(document.getString("image"));
-                        ImageView imageView = new ImageView(getActivity());
+                        ImageView imageView = new ImageView(activity);
                         imageView.setMaxWidth(dpToPx(200));
                         imageView.setMaxHeight(dpToPx(150));
                         imageView.setId(View.generateViewId());
                         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                        Glide.with(getActivity())
+                        Glide.with(activity)
                                 .load(uri)
                                 .apply(RequestOptions.bitmapTransform(new BlurTransformation(20, 2)))
                                 .into(imageView);
@@ -217,7 +244,7 @@ public class PersonFragment extends Fragment {
                         set.connect(imageView.getId(), ConstraintSet.RIGHT, cl.getId(), ConstraintSet.RIGHT);
                         set.applyTo(cl);
 
-                        ConstraintLayout innerCL = new ConstraintLayout(getActivity());
+                        ConstraintLayout innerCL = new ConstraintLayout(activity);
                         innerCL.setId(View.generateViewId());
 
 
@@ -235,12 +262,12 @@ public class PersonFragment extends Fragment {
                         set.connect(innerCL.getId(), ConstraintSet.RIGHT, cl.getId(), ConstraintSet.RIGHT);
                         set.applyTo(cl);
 
-                        ImageView iv = new ImageView(getActivity());
+                        ImageView iv = new ImageView(activity);
                         iv.setMaxWidth(dpToPx(124));
                         iv.setMaxHeight(dpToPx(93));
                         iv.setId(View.generateViewId());
                         iv.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                        Glide.with(getActivity())
+                        Glide.with(activity)
                                 .load(R.drawable.test)
                                 .into(iv);
                         innerCL.addView(iv);
@@ -253,7 +280,7 @@ public class PersonFragment extends Fragment {
                         set.applyTo(innerCL);
 
                         // Car Model Name
-                        TextView carModel = new TextView(getActivity());
+                        TextView carModel = new TextView(activity);
                         String carModelName = document.getString("model");
                         if (carModelName.length() > 20) {
                             carModelName = carModelName.substring(0, 18) + "...";
@@ -265,7 +292,7 @@ public class PersonFragment extends Fragment {
 
 
                         // Car Model Capacity
-                        TextView capacity = new TextView(getActivity());
+                        TextView capacity = new TextView(activity);
                         String capacityStr = String.valueOf(((Long)document.get("capacity")).intValue()
                                 - ((ArrayList<String>) document.get("ridersUIDs")).size()) + " seats left";
                         capacity.setText(capacityStr);
@@ -274,7 +301,7 @@ public class PersonFragment extends Fragment {
 
 
                         // Price
-                        TextView price = new TextView(getActivity());
+                        TextView price = new TextView(activity);
                         String priceStr = "$" + ((Double) document.get("basePrice")).toString() + " per ride";
                         price.setText(priceStr);
                         textViewFormat(price);
@@ -313,10 +340,12 @@ public class PersonFragment extends Fragment {
         return cl;
     }
 
+
+
     private void textViewFormat(TextView tv) {
-        tv.setTextColor(getResources().getColor(R.color.mainColour));
+        tv.setTextColor(activity.getResources().getColor(R.color.mainColour));
         tv.setGravity(Gravity.CENTER);
-        tv.setTypeface(getResources().getFont(R.font.spotify_font));
+        tv.setTypeface(activity.getResources().getFont(R.font.spotify_font));
         ConstraintLayout.LayoutParams lp = new ConstraintLayout.LayoutParams(
                 ConstraintLayout.LayoutParams.WRAP_CONTENT, // Width of TextView
                 ConstraintLayout.LayoutParams.WRAP_CONTENT);
@@ -326,7 +355,7 @@ public class PersonFragment extends Fragment {
     }
 
     private ConstraintLayout createDefaultConstraintLayout() {
-        ConstraintLayout cl = new ConstraintLayout(getActivity());
+        ConstraintLayout cl = new ConstraintLayout(activity);
         cl.setBackgroundResource(R.drawable.border);
         cl.setId(View.generateViewId());
 
@@ -343,7 +372,7 @@ public class PersonFragment extends Fragment {
     }
 
     private int dpToPx(int dp) {
-        int x = (int) (dp * ((float) getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT));
+        int x = (int) (dp * ((float) activity.getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT));
         return x;
     }
 

@@ -5,18 +5,45 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center"
+    android:gravity="top"
     android:background="@color/white"
     tools:context=".fragments.CarpoolFragment">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/spotify_font_bold"
-        android:text="HOME"
-        android:gravity="center"
-        android:textColor="@color/mainColour"
-        android:textSize="70sp"
-        android:layout_marginBottom="15dp"/>
+        android:paddingHorizontal="15dp"
+        android:paddingTop="15dp">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/spotify_font_bold"
+            android:gravity="center"
+            android:textColor="@color/mainColour"
+            android:textSize="32sp"
+            android:text="Carpool Reservation"
+
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/spotify_font"
+            android:gravity="start"
+            android:textColor="@color/mainColour"
+            android:textSize="15sp"
+            android:text="Reserved rides will show up under Your Reservations. It is your responsibility to be at the owner's location every morning. Feel free to reach out to the owner using the listed contact information."
+
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/title" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <include layout="@layout/reservation_recycler_view"/>
 
 </LinearLayout>
