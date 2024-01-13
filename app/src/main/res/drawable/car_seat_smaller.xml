@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:drawable="@drawable/car_seat_img"
+        android:width="@dimen/smaller_icon_size"
+        android:height="@dimen/smaller_icon_size" />
+
+</layer-list>

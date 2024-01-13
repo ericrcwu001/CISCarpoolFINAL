@@ -29,6 +29,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -137,7 +138,7 @@ public class RegisterActivity extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     User user = new User(mAuth.getCurrentUser().getUid().toString(),
                             firstNameString, lastNameString, emailAddressString, roleString,
-                            new ArrayList<>(), selectedUri.toString(), new ArrayList<>());
+                            new ArrayList<>(), selectedUri.toString(), new ArrayList<>(), 0);
                     firestore.collection("users").document(user.getuId()).set(user);
                     updateUI(mAuth.getCurrentUser());
                 } else {

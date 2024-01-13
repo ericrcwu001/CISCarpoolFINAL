@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/reservationsTemplate"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="10dp"
+    android:paddingVertical="10dp"
+    android:background="@drawable/rides_border"
+    tools:context=".fragments.CarpoolFragment"
+    >
+
+    <TextView
+        android:id="@+id/personName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxWidth="300dp"
+        android:fontFamily="@font/spotify_font_bold"
+        android:gravity="start"
+        android:text="Person Name"
+        android:textColor="@color/mainColour"
+        android:textSize="25sp"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/personRanking"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxWidth="200dp"
+        android:fontFamily="@font/spotify_font_bold"
+        android:gravity="start"
+        android:text="#x"
+        android:textColor="@color/mainColour"
+        android:textSize="40sp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <TextView
+        android:id="@+id/totalCarbonSaved"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/spotify_font"
+        android:drawablePadding="5dp"
+        android:gravity="start"
+        android:text="Saved x kg of carbon"
+        android:textColor="@color/mainColour"
+        android:textSize="18sp"
+        android:paddingEnd="5dp"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/personName"
+        app:drawableTint="@color/mainColour"/>
+
+    <TextView
+        android:id="@+id/totalRidesDone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/spotify_font"
+        android:drawablePadding="5dp"
+        android:gravity="start"
+        android:text="Has ridden x times"
+        android:textColor="@color/mainColour"
+        android:textSize="18sp"
+        android:paddingEnd="5dp"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/totalCarbonSaved"
+        app:drawableTint="@color/mainColour"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

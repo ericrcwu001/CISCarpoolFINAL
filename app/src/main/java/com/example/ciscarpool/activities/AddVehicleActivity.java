@@ -10,8 +10,11 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.PickVisualMediaRequest;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,11 +23,14 @@ import com.example.ciscarpool.R;
 import com.example.ciscarpool.classes.ElectricVehicle;
 import com.example.ciscarpool.classes.FuelVehicle;
 import com.example.ciscarpool.classes.HybridVehicle;
+import com.example.ciscarpool.classes.Vehicle;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import org.checkerframework.checker.units.qual.A;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,12 +46,18 @@ public class AddVehicleActivity extends AppCompatActivity {
     private MaterialButton skipBtn;
     private MaterialButton uploadBtn;
     private MaterialButton addVehicleBtn;
+    private MaterialButton locationBtn;
     private Spinner vehicleChoices;
 
     private FirebaseFirestore firestore;
     private FirebaseAuth mAuth;
     private ActivityResultLauncher<PickVisualMediaRequest> pickMedia;
     private boolean checkIfImgPicked;
+    private boolean checkIfLocationPicked;
+
+    private ArrayList<Double> latLng;
+    private ActivityResultLauncher<Intent> addLocationToAddVehicleLauncher;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,14 +70,43 @@ public class AddVehicleActivity extends AppCompatActivity {
     }
 
     private void elementsSetUp() {
+        addLocationToAddVehicleLauncher = registerForActivityResult(new
+                        ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult o) {
+                        Intent intent = o.getData();
+                        if (intent != null) {
+                            Bundle data = intent.getExtras();
+                            checkIfLocationPicked = true;
+                            latLng.add(data.getDouble("lat"));
+                            latLng.add(data.getDouble("lng"));
+                            Log.d("latlng", latLng.toString());
+                            locationBtn.setCompoundDrawablesWithIntrinsicBounds(
+                                    getDrawable(R.drawable.location), null,
+                                    getDrawable(R.drawable.tick), null);
+                        } else {
+                            checkIfLocationPicked = false;
+                            Log.d("PhotoPicker", "No media selected");
+                            locationBtn.setCompoundDrawablesWithIntrinsicBounds(
+                                    getDrawable(R.drawable.location), null,
+                                    getDrawable(R.drawable.cross), null);
+                        }
+                    }
+                }
+        );
+
         skipBtn = (MaterialButton) findViewById(R.id.skipBtn);
         uploadBtn = (MaterialButton) findViewById(R.id.uploadBtn);
         addVehicleBtn = (MaterialButton) findViewById(R.id.addVehicleBtn);
+        locationBtn = (MaterialButton) findViewById(R.id.locationBtn);
         carModel = (EditText) findViewById(R.id.carModel);
         seatingCapacity = (EditText) findViewById(R.id.seatingCapacity);
         pricePerRide = (EditText) findViewById(R.id.pricePerRide);
         vehicleChoices = (Spinner) findViewById(R.id.vehicleChoices);
         checkIfImgPicked = false;
+        checkIfLocationPicked = false;
+        latLng = new ArrayList<>();
 
         // Setting up Firestore
         firestore = FirebaseFirestore.getInstance();
@@ -105,10 +146,10 @@ public class AddVehicleActivity extends AppCompatActivity {
     }
 
     public void skip(View view) {
-        Intent intent = new Intent(this, MainViewActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-        overridePendingTransition(R.anim.slide_from_right,R.anim.slide_to_left);
+//        Intent intent = new Intent(this, MainViewActivity.class);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//        startActivity(intent);
+//        overridePendingTransition(R.anim.slide_from_right,R.anim.slide_to_left);
         finish();
     }
 
@@ -141,8 +182,8 @@ public class AddVehicleActivity extends AppCompatActivity {
         if (vehicleString.equals("Fuel Vehicle")) {
             FuelVehicle vehicle = new FuelVehicle(mAuth.getCurrentUser().getUid().toString(), carModelString,
                     seatingCapacityString, vehicleUniqueId, new ArrayList<>(), true,
-                    pricePerRideString, uriString);
-            firestore.collection("vehicles").document(vehicle.getVehicleID()).set(vehicle);
+                    pricePerRideString, uriString, latLng);
+            firestore.collection("vehicles").document(vehicle.getVehicleID()).set((Vehicle) vehicle);
             DocumentReference docRef = firestore.collection("users")
                     .document(mAuth.getCurrentUser().getUid().toString());
             docRef.update("ownedVehicles", FieldValue.arrayUnion(vehicle.getVehicleID()));
@@ -150,30 +191,30 @@ public class AddVehicleActivity extends AppCompatActivity {
         } else if (vehicleString.equals("Hybrid Vehicle")) {
             HybridVehicle vehicle = new HybridVehicle(mAuth.getCurrentUser().getUid().toString(), carModelString,
                     seatingCapacityString, vehicleUniqueId, new ArrayList<>(), true,
-                    pricePerRideString, uriString);
-            firestore.collection("vehicles").document(vehicle.getVehicleID()).set(vehicle);
+                    pricePerRideString, uriString, latLng);
+            firestore.collection("vehicles").document(vehicle.getVehicleID()).set((Vehicle) vehicle);
             DocumentReference docRef = firestore.collection("users")
                     .document(mAuth.getCurrentUser().getUid().toString());
             docRef.update("ownedVehicles", FieldValue.arrayUnion(vehicle.getVehicleID()));
         } else {
             ElectricVehicle vehicle = new ElectricVehicle(mAuth.getCurrentUser().getUid().toString(), carModelString,
                     seatingCapacityString, vehicleUniqueId, new ArrayList<>(), true,
-                    pricePerRideString, uriString);
-            firestore.collection("vehicles").document(vehicle.getVehicleID()).set(vehicle);
+                    pricePerRideString, uriString, latLng);
+            firestore.collection("vehicles").document(vehicle.getVehicleID()).set((Vehicle) vehicle);
             DocumentReference docRef = firestore.collection("users")
                     .document(mAuth.getCurrentUser().getUid().toString());
             docRef.update("ownedVehicles", FieldValue.arrayUnion(vehicle.getVehicleID()));
         }
 
-        Intent intent = new Intent(this, MainViewActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-        overridePendingTransition(R.anim.slide_from_right,R.anim.slide_to_left);
+//        Intent intent = new Intent(this, MainViewActivity.class);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//        startActivity(intent);
+//        overridePendingTransition(R.anim.slide_from_right,R.anim.slide_to_left);
         finish();
     }
 
     private boolean checkAllFieldsValid() {
-        boolean flag = checkIfImgPicked;
+        boolean flag = checkIfImgPicked && checkIfLocationPicked;
         if (carModel.getText().length() == 0) {
             carModel.setError("This field is required.");
             flag = false;
@@ -216,5 +257,10 @@ public class AddVehicleActivity extends AppCompatActivity {
 
         }
         return flag;
+    }
+
+    public void insertLocation(View view) {
+        Intent intent = new Intent(this, AddLocationToAddVehicle.class);
+        addLocationToAddVehicleLauncher.launch(intent);
     }
 }

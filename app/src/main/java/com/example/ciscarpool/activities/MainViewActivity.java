@@ -9,6 +9,8 @@ import android.view.WindowManager;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.example.ciscarpool.R;
 import com.example.ciscarpool.fragments.CarpoolFragment;
@@ -21,9 +23,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class MainViewActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
-    PersonFragment personFragment = new PersonFragment();
-    CarpoolFragment carpoolFragment = new CarpoolFragment();
-    LeaderboardFragment leaderboardFragment = new LeaderboardFragment();
     BottomNavigationView bottomNavigationView;
     private FirebaseFirestore firestore;
     private FirebaseAuth mAuth;
@@ -50,19 +49,23 @@ public class MainViewActivity extends AppCompatActivity implements BottomNavigat
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int itemId = item.getItemId();
+        Bundle bundle = new Bundle();
         if (itemId == R.id.person) {
+            PersonFragment personFragment = new PersonFragment();
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.flFragment, personFragment)
                     .commit();
             return true;
         } else if (itemId == R.id.carpool) {
+            CarpoolFragment carpoolFragment = new CarpoolFragment();
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.flFragment, carpoolFragment)
                     .commit();
             return true;
         } else if (itemId == R.id.leaderboard) {
+            LeaderboardFragment leaderboardFragment = new LeaderboardFragment();
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.flFragment, leaderboardFragment)
@@ -82,20 +85,24 @@ public class MainViewActivity extends AppCompatActivity implements BottomNavigat
         Intent intent = new Intent(MainViewActivity.this, EntryActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
+        overridePendingTransition(R.anim.slide_from_left, R.anim.slide_to_right);
         finish();
     }
 
     public void goToAddVehicle(View view) {
         Intent intent = new Intent(MainViewActivity.this, AddVehicleActivity.class);
         startActivity(intent);
-        finish();
+        overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
     }
 
     public void goToCarpoolView(View view) {
+        CarpoolFragment carpoolFragment = new CarpoolFragment();
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.flFragment, carpoolFragment)
                 .commit();
         bottomNavigationView.getMenu().getItem(1).setChecked(true);
     }
+
+
 }

@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.ciscarpool.R;
 import com.example.ciscarpool.classes.User;
@@ -30,31 +31,34 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
+/**
+ * This activity is for users to register/login through the email and password or Google-Sign-In
+ * protocols provided through Firebase Authentication.
+ *
+ * @author Eric Wu
+ * @version Jan 13th, 2024
+ *
+ * **/
 public class EntryActivity extends AppCompatActivity {
     private Button signup, login;
     private TextView googleEmailError;
     private GoogleSignInClient mGoogleSignInClient;
     private FirebaseFirestore firestore;
+    private FirebaseUser currentUser;
     private FirebaseAuth mAuth;
     private int RC_SIGN_IN = 17;
 
+    /**
+     * Start of the activity lifecycle. Setup + assigns click listeners to buttons.
+     * **/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_entry);
         hideStatusBar();
         elementsSetUp();
-
-//        if (mAuth.getCurrentUser().getProviderId().equals("google.com")) {
-//            mAuth.signOut();
-//            GoogleSignIn.getClient(getApplicationContext(), GoogleSignInOptions.DEFAULT_SIGN_IN).signOut();
-//        } else {
-//            mAuth.signOut();
-//        }
-
-
-        FirebaseUser currentUser = mAuth.getCurrentUser();
 
         if (currentUser != null) {
             Intent intent = new Intent(EntryActivity.this, MainViewActivity.class);
@@ -83,6 +87,9 @@ public class EntryActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Instantiates respective views' variables.
+     * **/
     private void elementsSetUp() {
         signup = (Button) findViewById(R.id.signup);
         login = (Button) findViewById(R.id.login);
@@ -90,13 +97,19 @@ public class EntryActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         firestore = FirebaseFirestore.getInstance();
+        currentUser = mAuth.getCurrentUser();
     }
 
+    /**
+     * Hide's the status bar on Android.
+     * **/
     private void hideStatusBar() {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
-//        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
     }
 
+    /**
+     * Launches the Google Sign In intent.
+     * **/
     public void continueWithGoogle(View view) {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id)).requestEmail().requestProfile().build();
@@ -108,6 +121,9 @@ public class EntryActivity extends AppCompatActivity {
         startActivityForResult(intent, RC_SIGN_IN);
     }
 
+    /**
+     * Gets Google Sign In account task.
+     * **/
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -117,15 +133,24 @@ public class EntryActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Check if Google Sign In account is a valid account.
+     * **/
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
             firebaseAuth(account.getIdToken(), account);
         } catch (ApiException e) {
-            Log.w("EntryActivity", "signInResult:failed code=" + e.getStatusCode());
+            Toast.makeText(this, "Google Sign In failed!",
+                    Toast.LENGTH_SHORT).show();
+
         }
     }
 
+    /**
+     * Signs in with Firebase Authentication using GoogleSignInAccount.
+     * @param idToken GoogleSignInAccount String ID Token
+     * **/
     private void firebaseAuth(String idToken, GoogleSignInAccount account) {
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken,null);
         mAuth.signInWithCredential(credential)
@@ -153,7 +178,7 @@ public class EntryActivity extends AppCompatActivity {
                                             User user2 = new User(mAuth.getCurrentUser().getUid().toString(),
                                                     account.getGivenName(), account.getFamilyName(),
                                                     account.getEmail(), getRoleFromEmail(account.getEmail()),
-                                                    new ArrayList<>(), account.getPhotoUrl().toString(), new ArrayList<>());
+                                                    new ArrayList<>(), account.getPhotoUrl().toString(), new ArrayList<>(), 0);
 
                                             firestore.collection("users").document(user2.getuId()).set(user2);
                                         }
@@ -171,6 +196,10 @@ public class EntryActivity extends AppCompatActivity {
                 });
     }
 
+    /**
+     * @param email A valid CIS email
+     * @return The role of the user - student or faculty
+     * **/
     private String getRoleFromEmail(String email) {
         if (email.endsWith("student.cis.edu.hk")) {
             return "Student";
@@ -183,7 +212,7 @@ public class EntryActivity extends AppCompatActivity {
         Intent intent = new Intent(EntryActivity.this, MainViewActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
-//        overridePendingTransition(R.anim.slide_from_right,R.anim.slide_to_left);
+        overridePendingTransition(R.anim.slide_from_right,R.anim.slide_to_left);
         finish();
     }
 
