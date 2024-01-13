@@ -23,6 +23,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import jp.wasabeef.glide.transformations.BlurTransformation;
 import com.example.ciscarpool.R;
@@ -268,7 +270,7 @@ public class PersonFragment extends Fragment {
                         iv.setId(View.generateViewId());
                         iv.setScaleType(ImageView.ScaleType.CENTER_CROP);
                         Glide.with(activity)
-                                .load(R.drawable.test)
+                                .load(R.drawable.low_opacity_bg)
                                 .into(iv);
                         innerCL.addView(iv);
                         set = new ConstraintSet();

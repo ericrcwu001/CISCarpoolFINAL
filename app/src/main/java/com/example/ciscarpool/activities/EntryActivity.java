@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -49,6 +51,7 @@ public class EntryActivity extends AppCompatActivity {
     private FirebaseUser currentUser;
     private FirebaseAuth mAuth;
     private int RC_SIGN_IN = 17;
+    private Bundle appBundle;
 
     /**
      * Start of the activity lifecycle. Setup + assigns click listeners to buttons.
@@ -57,6 +60,14 @@ public class EntryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_entry);
+        ApplicationInfo app = null;
+        try {
+            app = getPackageManager().getApplicationInfo(getPackageName(), PackageManager.GET_META_DATA);
+            appBundle = app.metaData;
+        } catch (PackageManager.NameNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+//        Log.d("check", bundle.getString("com.google.android.geo.WEB_API_KEY"));
         hideStatusBar();
         elementsSetUp();
 
@@ -112,7 +123,8 @@ public class EntryActivity extends AppCompatActivity {
      * **/
     public void continueWithGoogle(View view) {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id)).requestEmail().requestProfile().build();
+                .requestIdToken(appBundle.getString("default_web_client_id")).requestEmail()
+                .requestProfile().build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
         mGoogleSignInClient.signOut();

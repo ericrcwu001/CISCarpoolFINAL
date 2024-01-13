@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.location.Address;
 import android.location.Geocoder;
@@ -15,6 +17,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 
+import com.android.volley.BuildConfig;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -47,12 +50,20 @@ public class AddLocationToAddVehicle extends AppCompatActivity implements OnMapR
     private final LatLng HKUpperRightLatLng = new LatLng(22.581798, 114.405529);
     private final LatLng CISLatLng = new LatLng(22.28370058114513, 114.19787328287362);
     private LatLng selectedLatLng;
+    private Bundle appBundle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_location_to_add_vehicle);
         hideStatusBar();
+        ApplicationInfo app = null;
+        try {
+            app = getPackageManager().getApplicationInfo(getPackageName(), PackageManager.GET_META_DATA);
+            appBundle = app.metaData;
+        } catch (PackageManager.NameNotFoundException e) {
+            throw new RuntimeException(e);
+        }
 
         elementsSetUp();
         mapView.onCreate(savedInstanceState);
@@ -63,7 +74,8 @@ public class AddLocationToAddVehicle extends AppCompatActivity implements OnMapR
                 List<Address> addressList = null;
                 if (query != null || !query.equals("")) {
                     String url = "https://maps.googleapis.com/maps/api/geocode/json?address="
-                            + Uri.encode(query) + "&sensor=true&key=" + getString(R.string.MAPS_WEB_API_KEY);
+                            + Uri.encode(query) + "&sensor=true&key=" +
+                            appBundle.getString("com.google.android.geo.WEB_API_KEY");
                     RequestQueue queue = Volley.newRequestQueue(AddLocationToAddVehicle.this);
                     JsonObjectRequest stateReq = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                         @Override
