@@ -1,56 +1,34 @@
 package com.example.ciscarpool.adapters;
 
-import android.app.Activity;
 import android.content.Context;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
-
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.ciscarpool.R;
 import com.example.ciscarpool.classes.User;
-import com.example.ciscarpool.classes.Vehicle;
-import com.example.ciscarpool.fragments.VehicleSchoolMapsFragment;
-import com.example.ciscarpool.helpers.GPSHelper;
-import com.example.ciscarpool.interfaces.VehicleOwnerNameCallback;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.material.button.MaterialButton;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FieldValue;
-import com.google.firebase.firestore.FirebaseFirestore;
-
 import java.util.List;
-import java.util.Locale;
 
+/**
+ * {@link LeaderboardAdapter} extends {@link RecyclerView.Adapter} to format data from Firebase
+ * Firestore into a {@link RecyclerView} for {@link com.example.ciscarpool.fragments.LeaderboardFragment}
+ *
+ * @author Eric Wu
+ * @version 1.0
+ * **/
 public class LeaderboardAdapter extends
         RecyclerView.Adapter<LeaderboardAdapter.ViewHolder> {
-    private FirebaseFirestore firestore;
-    private FragmentManager fragmentManager;
-    private FirebaseAuth mAuth;
-    private Activity activity;
+    private List<User> mUsers;
 
-    // Provide a direct reference to each of the views within a data item
-    // Used to cache the views within the item layout for fast access
+    /**
+     * {@link ViewHolder} extends {@link RecyclerView.ViewHolder} to instantiate each individual
+     * element in the RecyclerView.
+     */
     public class ViewHolder extends RecyclerView.ViewHolder {
-        // Your holder should contain a member variable
-        // for any view that will be set as you render a row
-
         public TextView totalRidesDone, personName, personRanking, totalCarbonSaved;
-        public ImageView carImg;
 
-
-        // We also create a constructor that accepts the entire item row
-        // and does the view lookups to find each subview
+        // Constructor to instantiate each element.
         public ViewHolder(View itemView) {
             // Stores the itemView in a public final member variable that can be used
             // to access the context from any ViewHolder instance.
@@ -63,17 +41,19 @@ public class LeaderboardAdapter extends
         }
     }
 
-    // Store a member variable for the contacts
-    private List<User> mUsers;
-
-    // Pass in the contact array into the constructor
-    public LeaderboardAdapter(List<User> users, Activity activity, FragmentManager parentFragmentManager) {
+    // Pass in the User array into the constructor
+    public LeaderboardAdapter(List<User> users) {
         mUsers = users;
-        mAuth = FirebaseAuth.getInstance();
-        fragmentManager = parentFragmentManager;
-        this.activity = activity;
     }
 
+    /**
+     *
+     * @param parent The ViewGroup into which the new View will be added after it is bound to
+     *               an adapter position.
+     * @param viewType The view type of the new View.
+     *
+     * @return viewHolder instance.
+     */
     @Override
     public LeaderboardAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
@@ -87,7 +67,12 @@ public class LeaderboardAdapter extends
         return viewHolder;
     }
 
-    // Involves populating data into the item through holder
+    /**
+     * Populates data into the item through the ViewHolder
+     * @param holder The ViewHolder which should be updated to represent the contents of the
+     *        item at the given position in the data set.
+     * @param position The position of the item within the adapter's data set.
+     */
     @Override
     public void onBindViewHolder(LeaderboardAdapter.ViewHolder holder, int position) {
         // Get the data model based on position
@@ -95,8 +80,6 @@ public class LeaderboardAdapter extends
 
         // Set item views based on your views and data model
         TextView tv = holder.totalRidesDone;
-
-
         tv = holder.personName;
         tv.setText((CharSequence) (user.getFirstName() + " " + user.getLastName()));
 
@@ -106,10 +89,12 @@ public class LeaderboardAdapter extends
         tv = holder.totalCarbonSaved;
         String numericKiloCarbonSavedStr = String.valueOf(user.getKiloCarbonSaved());
         tv.setText((CharSequence) ("Saved " + numericKiloCarbonSavedStr + " kg of carbon"));
-
     }
 
-    // Returns the total count of items in the list
+
+    /**
+     * @return Returns the total count of items in the list
+     */
     @Override
     public int getItemCount() {
         return mUsers.size();

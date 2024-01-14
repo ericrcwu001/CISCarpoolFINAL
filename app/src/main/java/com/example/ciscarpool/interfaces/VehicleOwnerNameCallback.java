@@ -1,9 +1,12 @@
 package com.example.ciscarpool.interfaces;
 
-import com.example.ciscarpool.classes.Vehicle;
-
-import java.util.ArrayList;
-
+/**
+ * {@link VehicleOwnerNameCallback} is an interface to wait for Firebase Firestore response for the
+ * {@link com.example.ciscarpool.adapters.RidesAdapter}
+ *
+ * @author Eric Wu
+ * @version 1.0
+ * **/
 public interface VehicleOwnerNameCallback {
     void vehicleOwnerNameCallback(String fullName);
 }

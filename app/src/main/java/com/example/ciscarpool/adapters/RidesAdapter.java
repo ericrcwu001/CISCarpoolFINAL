@@ -31,48 +31,49 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * {@link RidesAdapter} extends {@link RecyclerView.Adapter} to format data from Firebase
+ * Firestore into a {@link RecyclerView} for {@link com.example.ciscarpool.fragments.CarpoolFragment}
+ *
+ * @author Eric Wu
+ * @version 1.0
+ * **/
 public class RidesAdapter extends
         RecyclerView.Adapter<RidesAdapter.ViewHolder> {
+    private List<Vehicle> mVehicles;
     private FirebaseFirestore firestore;
     private FragmentManager fragmentManager;
     private FirebaseAuth mAuth;
     private Activity activity;
 
-    // Provide a direct reference to each of the views within a data item
-    // Used to cache the views within the item layout for fast access
+    /**
+     * {@link RidesAdapter.ViewHolder} extends {@link RecyclerView.ViewHolder} to instantiate
+     * each individual element in the RecyclerView.
+     */
     public class ViewHolder extends RecyclerView.ViewHolder {
-        // Your holder should contain a member variable
-        // for any view that will be set as you render a row
-
         public TextView carModel, typeOfVehicle, ownedBy, distanceFromUser, basePrice, capacity;
         public MaterialButton reserveRideBtn, viewMoreBtn;
         public ConstraintLayout reservationsTemplate;
-        public ImageView carImg;
 
-
-        // We also create a constructor that accepts the entire item row
-        // and does the view lookups to find each subview
+        // Constructor to instantiate each element.
         public ViewHolder(View itemView) {
             // Stores the itemView in a public final member variable that can be used
             // to access the context from any ViewHolder instance.
             super(itemView);
 
-            carModel = (TextView) itemView.findViewById(R.id.carModel);
-            typeOfVehicle = (TextView) itemView.findViewById(R.id.typeOfVehicle);
-            ownedBy = (TextView) itemView.findViewById(R.id.ownedBy);
-            distanceFromUser = (TextView) itemView.findViewById(R.id.distanceFromUser);
-            basePrice = (TextView) itemView.findViewById(R.id.basePrice);
-            capacity = (TextView) itemView.findViewById(R.id.capacity);
-            reserveRideBtn = (MaterialButton) itemView.findViewById(R.id.reserveRideBtn);
-            viewMoreBtn = (MaterialButton) itemView.findViewById(R.id.viewMoreBtn);
-            reservationsTemplate = (ConstraintLayout) itemView.findViewById(R.id.reservationsTemplate);
+            carModel = itemView.findViewById(R.id.carModel);
+            typeOfVehicle = itemView.findViewById(R.id.typeOfVehicle);
+            ownedBy = itemView.findViewById(R.id.ownedBy);
+            distanceFromUser = itemView.findViewById(R.id.distanceFromUser);
+            basePrice = itemView.findViewById(R.id.basePrice);
+            capacity = itemView.findViewById(R.id.capacity);
+            reserveRideBtn = itemView.findViewById(R.id.reserveRideBtn);
+            viewMoreBtn = itemView.findViewById(R.id.viewMoreBtn);
+            reservationsTemplate = itemView.findViewById(R.id.reservationsTemplate);
         }
     }
 
-    // Store a member variable for the contacts
-    private List<Vehicle> mVehicles;
-
-    // Pass in the contact array into the constructor
+    // Pass in the Vehicle array into the constructor
     public RidesAdapter(List<Vehicle> contacts, Activity activity, FragmentManager parentFragmentManager) {
         mVehicles = contacts;
         mAuth = FirebaseAuth.getInstance();
@@ -80,6 +81,14 @@ public class RidesAdapter extends
         this.activity = activity;
     }
 
+    /**
+     *
+     * @param parent The ViewGroup into which the new View will be added after it is bound to
+     *               an adapter position.
+     * @param viewType The view type of the new View.
+     *
+     * @return viewHolder instance.
+     */
     @Override
     public RidesAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
@@ -93,7 +102,12 @@ public class RidesAdapter extends
         return viewHolder;
     }
 
-    // Involves populating data into the item through holder
+    /**
+     * Populates data into the item through the ViewHolder
+     * @param holder The ViewHolder which should be updated to represent the contents of the
+     *        item at the given position in the data set.
+     * @param position The position of the item within the adapter's data set.
+     */
     @Override
     public void onBindViewHolder(RidesAdapter.ViewHolder holder, int position) {
         // Get the data model based on position
@@ -110,7 +124,6 @@ public class RidesAdapter extends
         tv.setText((CharSequence) (String.valueOf(vehicle.getCapacity()) + " left"));
 
         tv = holder.typeOfVehicle;
-//        System.out.println(vehicle.getKiloCarbonSavedPerRidePerKm());
         double carbonSaved = vehicle.getKiloCarbonSavedPerRidePerKm();
         if (carbonSaved == 0.192) { // Fuel Vehicle
             tv.setText((CharSequence) "Fuel Vehicle");
@@ -122,12 +135,9 @@ public class RidesAdapter extends
 
         tv = holder.ownedBy;
         TextView finalTv = tv;
-        getVehicleOwnerName(new VehicleOwnerNameCallback() {
-            @Override
-            public void vehicleOwnerNameCallback(String fullName) {
-                CharSequence cs = (CharSequence) ("Owned by " + fullName);
-                finalTv.setText(cs);
-            }
+        getVehicleOwnerName(fullName -> {
+            CharSequence cs = (CharSequence) ("Owned by " + fullName);
+            finalTv.setText(cs);
         }, vehicle.getOwner());
 
         tv = holder.distanceFromUser;
@@ -140,54 +150,53 @@ public class RidesAdapter extends
         tv.setText(displayStr);
 
         MaterialButton mb = holder.reserveRideBtn;
-        mb.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DocumentReference docRef = firestore.collection("users")
-                        .document(mAuth.getUid());
-                docRef.update("reservedRides", FieldValue.arrayUnion(vehicle.getVehicleID()));
+        mb.setOnClickListener(v -> {
+            DocumentReference docRef = firestore.collection("users")
+                    .document(mAuth.getUid());
+            docRef.update("reservedRides", FieldValue.arrayUnion(vehicle.getVehicleID()));
 
-                docRef = firestore.collection("vehicles")
-                        .document(vehicle.getVehicleID());
-                docRef.update("ridersUIDs", FieldValue.arrayUnion(mAuth.getUid()));
-                holder.reservationsTemplate.setVisibility(View.GONE);
-            }
+            docRef = firestore.collection("vehicles")
+                    .document(vehicle.getVehicleID());
+            docRef.update("ridersUIDs", FieldValue.arrayUnion(mAuth.getUid()));
+            holder.reservationsTemplate.setVisibility(View.GONE);
         });
 
         mb = holder.viewMoreBtn;
-        mb.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentManager fm = fragmentManager;
-                Fragment frag = new VehicleSchoolMapsFragment();
-                Bundle bundle = new Bundle();
-                bundle.putString("vehicle", vehicle.getVehicleID());
-                bundle.putBoolean("viewMore", true);
-//                bundle.putString("user", mAuth.getCurrentUser().getUid().toString());
-//                bundle.putBoolean("yourVehicles", true);
-                frag.setArguments(bundle);
-                fm.beginTransaction()
-                        .replace(R.id.flFragment, frag)
-                        .commit();
-            }
+        mb.setOnClickListener(v -> {
+            FragmentManager fm = fragmentManager;
+            Fragment frag = new VehicleSchoolMapsFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString("vehicle", vehicle.getVehicleID());
+            bundle.putBoolean("viewMore", true);
+            frag.setArguments(bundle);
+            fm.beginTransaction()
+                    .replace(R.id.flFragment, frag)
+                    .commit();
         });
     }
 
+    /**
+     * Callback to get Vehicle owner's full name and using it once connected to Firebase Firestore.
+     * @param callback VehicleOwnerNameCallback
+     * @param owner Vehicle owner's UID
+     */
     private void getVehicleOwnerName(final VehicleOwnerNameCallback callback, String owner) {
         firestore = FirebaseFirestore.getInstance();
         DocumentReference docRef = firestore.collection("users")
                 .document(owner);
-        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                if (documentSnapshot.exists()) {
-                    String fullName = documentSnapshot.getString("firstName") + " " + documentSnapshot.getString("lastName");
-                    callback.vehicleOwnerNameCallback(fullName);
-                }
+        docRef.get().addOnSuccessListener(documentSnapshot -> {
+            if (documentSnapshot.exists()) {
+                String fullName = documentSnapshot.getString("firstName") + " " + documentSnapshot.getString("lastName");
+                callback.vehicleOwnerNameCallback(fullName);
             }
         });
     }
 
+    /**
+     * @param latLng1 LatLng aat point 1
+     * @param latLng2 LatLng at point 2
+     * @return the distance in km between latLng1 and latLng 2
+     */
     private double distance(LatLng latLng1, LatLng latLng2) {
 
         double lat1 = latLng1.latitude;
@@ -209,7 +218,10 @@ public class RidesAdapter extends
     }
 
 
-    // Returns the total count of items in the list
+
+    /**
+     * @return Returns the total count of items in the list
+     */
     @Override
     public int getItemCount() {
         return mVehicles.size();

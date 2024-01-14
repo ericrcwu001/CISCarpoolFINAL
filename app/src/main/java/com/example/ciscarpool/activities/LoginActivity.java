@@ -4,75 +4,98 @@ import android.content.Intent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
-
-import androidx.annotation.NonNull;
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.ciscarpool.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+/**
+ * {@link LoginActivity} is for users to login through the email and password protocols provided
+ * through Firebase Authentication.
+ *
+ * @author Eric Wu
+ * @version 1.0
+ * **/
 public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseFirestore firestore;
     private EditText emailAddress;
     private EditText password;
+
+    /**
+     * Start of the activity lifecycle. Setup + assigns click listeners to buttons.
+     */
     @Override
     protected void onStart() {
         super.onStart();
         setContentView(R.layout.activity_login);
-        hideStatusBar();
 
-        // pre-conditions
+        hideStatusBar();
         elementsSetUp();
     }
 
+    /**
+     * Instantiates respective views' variables.
+     */
     private void elementsSetUp() {
-        emailAddress = (EditText) findViewById(R.id.emailAddress);
-        password = (EditText) findViewById(R.id.password);
-
-        // Setting up Firestore and Authentication
+        emailAddress = findViewById(R.id.emailAddress);
+        password = findViewById(R.id.password);
         firestore = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
     }
 
+    /**
+     * Back button onClick method to go back to {@link EntryActivity}.
+     * @param view passed by the onClick property of the Button View.
+     */
     public void backBtnOnClick(View view) {
         Intent intent = new Intent(this, EntryActivity.class);
         startActivity(intent);
         overridePendingTransition(R.anim.slide_from_left,R.anim.slide_to_right);
         finish();
     }
+
+    /**
+     * Hide's the status bar on Android.
+     * **/
     private void hideStatusBar() {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
-//        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
     }
 
+    /**
+     * Attempts to login through Firebase Authentication
+     * @param view passed by the onClick property of the Button View.
+     */
     public void login(View view) {
+        // Make sure all entered fields meet the requirements set for them. If not, login fails.
         boolean validFields = checkAllFieldsValid();
-        if (!validFields) return;
+        if (!validFields) {
+            Toast.makeText(this, "Check all your fields!",
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
 
+        // Get values of emailAddress and password fields
         String emailAddressString = emailAddress.getText().toString();
         String passwordString = password.getText().toString();
 
+        // Firebase Auth sign in
         mAuth.signInWithEmailAndPassword(emailAddressString, passwordString)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-                    updateUI(mAuth.getCurrentUser());
-                } else {
-                    emailAddress.setError("Wrong username or password.");
-                    password.setError("Wrong username or password.");
-                }
-            }
-        });
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        updateUI();
+                    } else {
+                        emailAddress.setError("Wrong username or password.");
+                        password.setError("Wrong username or password.");
+                    }
+                });
     }
 
-    private void updateUI(FirebaseUser user) {
+    /**
+     * Launches the MainViewActivity Intent.
+     * **/
+    private void updateUI() {
         Intent intent = new Intent(this, MainViewActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
@@ -80,6 +103,10 @@ public class LoginActivity extends AppCompatActivity {
         finish();
     }
 
+    /**
+     *
+     * @return whether or not all entered fields are valid
+     */
     private boolean checkAllFieldsValid() {
         boolean flag = true;
         if (emailAddress.getText().length() == 0) {

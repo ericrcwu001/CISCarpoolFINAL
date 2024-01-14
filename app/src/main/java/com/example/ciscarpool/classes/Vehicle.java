@@ -2,11 +2,17 @@ package com.example.ciscarpool.classes;
 
 import java.util.ArrayList;
 
+/**
+ * {@link Vehicle} is a class to represent a vehicle's relevant information.
+ *
+ * @author Eric Wu
+ * @version 1.0
+ * **/
 public class Vehicle {
-    protected String owner; // Value is User's uID
+    protected String owner;
     protected String model;
     protected int capacity;
-    protected String vehicleID; // randomly assigned --> same as the document title in firebase
+    protected String vehicleID;
     protected ArrayList<String> ridersUIDs;
     protected boolean open;
     protected double basePrice;
@@ -30,19 +36,7 @@ public class Vehicle {
         this.location = location;
     }
 
-    public Vehicle(String owner, String model, int capacity, String vehicleID, ArrayList<String> ridersUIDs, boolean open, double basePrice, String image, ArrayList<Double> location, double kiloCarbonSavedPerRidePerKm) {
-        this.owner = owner;
-        this.model = model;
-        this.capacity = capacity;
-        this.vehicleID = vehicleID;
-        this.ridersUIDs = ridersUIDs;
-        this.open = open;
-        this.basePrice = basePrice;
-        this.image = image;
-        this.location = location;
-        this.kiloCarbonSavedPerRidePerKm = kiloCarbonSavedPerRidePerKm;
-    }
-
+    // Getters and Setters
     public ArrayList<Double> getLocation() {
         return location;
     }

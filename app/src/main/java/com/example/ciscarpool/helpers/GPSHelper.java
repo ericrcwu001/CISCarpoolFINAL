@@ -6,25 +6,25 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
-
 import androidx.core.app.ActivityCompat;
 
+import com.example.ciscarpool.activities.LoginActivity;
 import com.google.android.gms.maps.model.LatLng;
-
 import java.util.List;
 
+/**
+ * {@link GPSHelper} is a helper class to get the current location of the user.
+ *
+ * @author Eric Wu
+ * @version 1.0
+ * **/
 public class GPSHelper {
-
     private Activity activity;
-    // flag for GPS Status
-    private boolean isGPSEnabled = false;
-    // flag for network status
-    private boolean isNetworkEnabled = false;
     private LocationManager locationManager;
-    private Location location;
     private double latitude;
     private double longitude;
 
+    // Constructor
     public GPSHelper(Activity activity) {
         this.activity = activity;
 
@@ -32,6 +32,10 @@ public class GPSHelper {
                 .getSystemService(Context.LOCATION_SERVICE);
 
     }
+
+    /**
+     * Checks location permissions + gets the current location of the user.
+     */
     public void getMyLocation() {
         List<String> providers = locationManager.getProviders(true);
 
@@ -59,6 +63,9 @@ public class GPSHelper {
         }
     }
 
+    /**
+     * @return {@link LatLng} current location of user
+     */
     public LatLng getLatLng() {
         return new LatLng(latitude, longitude);
     }
