@@ -2,6 +2,13 @@ package com.example.ciscarpool.classes;
 
 import java.util.ArrayList;
 
+/**
+ * {@link HybridVehicle} is a child class of {@link Vehicle} to instantiate the
+ * kiloCarbonSavedPerRidePerKm variable.
+ *
+ * @author Eric Wu
+ * @version 1.0
+ * **/
 public class HybridVehicle extends Vehicle{
     public HybridVehicle() {
     }

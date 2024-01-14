@@ -1,7 +1,12 @@
 package com.example.ciscarpool.classes;
 import java.util.ArrayList;
-import java.util.Map;
 
+/**
+ * {@link User} is a class to represent a user's relevant information.
+ *
+ * @author Eric Wu
+ * @version 1.0
+ * **/
 public class User {
     private static String currentUser = null;
     private String uId;
@@ -28,6 +33,7 @@ public class User {
         this.kiloCarbonSaved = kiloCarbonSaved;
     }
 
+    // Getters and Setters
     public static String getCurrentUser() {
         return currentUser;
     }

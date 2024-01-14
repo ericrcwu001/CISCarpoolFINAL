@@ -5,13 +5,9 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-
 import com.example.ciscarpool.R;
 import com.example.ciscarpool.fragments.CarpoolFragment;
 import com.example.ciscarpool.fragments.PersonFragment;
@@ -22,11 +18,26 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+/**
+ * {@link MainViewActivity} is the main intractable activity to access the person, carpool, and
+ * leaderboard pages. It implements a {@link BottomNavigationView}.
+ *
+ * @author Eric Wu
+ * @version 1.0
+ * **/
 public class MainViewActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
     BottomNavigationView bottomNavigationView;
+    private static int page = 0;
     private FirebaseFirestore firestore;
     private FirebaseAuth mAuth;
 
+    /**
+     * Start of the activity lifecycle. Setup + assigns click listeners to buttons.
+     * @param savedInstanceState If the activity is being re-initialized after
+     *     previously being shut down then this Bundle contains the data it most
+     *     recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
+     *
+     */
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,37 +46,45 @@ public class MainViewActivity extends AppCompatActivity implements BottomNavigat
 
         mAuth = FirebaseAuth.getInstance();
         firestore = FirebaseFirestore.getInstance();
-
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
-
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
         bottomNavigationView.setSelectedItemId(R.id.person);
     }
+
+    /**
+     * Hide's the status bar on Android.
+     * **/
     private void hideStatusBar() {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
-//        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
     }
 
+    /**
+     * On navigation item selected, go to it's corresponding page's fragment.
+     * @param item The selected item
+     * @return whether or not navigation item is successfully selected.
+     */
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int itemId = item.getItemId();
-        Bundle bundle = new Bundle();
-        if (itemId == R.id.person) {
+        if (page != 1 && itemId == R.id.person) {
             PersonFragment personFragment = new PersonFragment();
+            page = 1;
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.flFragment, personFragment)
                     .commit();
             return true;
-        } else if (itemId == R.id.carpool) {
+        } else if (page != 2 && itemId == R.id.carpool) {
             CarpoolFragment carpoolFragment = new CarpoolFragment();
+            page = 2;
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.flFragment, carpoolFragment)
                     .commit();
             return true;
-        } else if (itemId == R.id.leaderboard) {
+        } else if (page != 3 && itemId == R.id.leaderboard) {
             LeaderboardFragment leaderboardFragment = new LeaderboardFragment();
+            page = 3;
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.flFragment, leaderboardFragment)
@@ -75,6 +94,10 @@ public class MainViewActivity extends AppCompatActivity implements BottomNavigat
         return false;
     }
 
+    /**
+     * Signs out of the current user through Firebase Auth. Moves to {@link EntryActivity}.
+     * @param view passed by the onClick property of the Button View.
+     */
     public void signOut(View view) {
         if (mAuth.getCurrentUser().getProviderId().equals("google.com")) {
             mAuth.signOut();
@@ -89,12 +112,20 @@ public class MainViewActivity extends AppCompatActivity implements BottomNavigat
         finish();
     }
 
+    /**
+     * Moves to {@link AddVehicleActivity}.
+     * @param view passed by the onClick property of the Button View.
+     */
     public void goToAddVehicle(View view) {
         Intent intent = new Intent(MainViewActivity.this, AddVehicleActivity.class);
         startActivity(intent);
         overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
     }
 
+    /**
+     * Moves to {@link CarpoolFragment}.
+     * @param view passed by the onClick property of the Button View.
+     */
     public void goToCarpoolView(View view) {
         CarpoolFragment carpoolFragment = new CarpoolFragment();
         getSupportFragmentManager()
