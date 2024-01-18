@@ -8,7 +8,6 @@ import java.util.ArrayList;
  * @version 1.0
  * **/
 public class User {
-    private static String currentUser = null;
     private String uId;
     private String firstName;
     private String lastName;
@@ -34,14 +33,6 @@ public class User {
     }
 
     // Getters and Setters
-    public static String getCurrentUser() {
-        return currentUser;
-    }
-
-    public static void setCurrentUser(String currentUser) {
-        User.currentUser = currentUser;
-    }
-
     public String getuId() {
         return uId;
     }
