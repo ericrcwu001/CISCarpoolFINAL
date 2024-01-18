@@ -156,7 +156,7 @@ public class PersonFragment extends Fragment {
                             Toast.LENGTH_SHORT).show();
                 }
             } else {
-                Log.d(PersonFragment.class.toString(), "get failed: ", task.getException());
+                Log.d(PersonFragment.class.toString(), "1 get failed: " + task.getException());
                 Toast.makeText(activity, "Internal error",
                         Toast.LENGTH_SHORT).show();
             }
@@ -171,7 +171,7 @@ public class PersonFragment extends Fragment {
                     .into((ImageView) getView().findViewById(R.id.profile_image));
         } else {
             docRef.get().addOnCompleteListener(task -> {
-                if (task.isSuccessful() && getActivity() != null && isAdded()) {
+                if (task.isSuccessful() && activity != null && isAdded()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
 
@@ -185,7 +185,7 @@ public class PersonFragment extends Fragment {
                                 Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    Log.d(PersonFragment.class.toString(), "get failed: ", task.getException());
+                    Log.d(PersonFragment.class.toString(), "2 get failed: " + task.getException());
                     Toast.makeText(activity, "Internal error",
                             Toast.LENGTH_SHORT).show();
                 }
@@ -376,7 +376,7 @@ public class PersonFragment extends Fragment {
                             Toast.LENGTH_SHORT).show();
                 }
             } else {
-                Log.d(PersonFragment.class.toString(), "get failed: ", task.getException());
+                Log.d(PersonFragment.class.toString(), "3 get failed: " + task.getException());
                 Toast.makeText(activity, "Internal error",
                         Toast.LENGTH_SHORT).show();
             }

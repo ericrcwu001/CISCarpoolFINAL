@@ -49,6 +49,13 @@ public class MainViewActivity extends AppCompatActivity implements BottomNavigat
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
         bottomNavigationView.setSelectedItemId(R.id.person);
+
+        PersonFragment personFragment = new PersonFragment();
+        page = 1;
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.flFragment, personFragment)
+                .commit();
     }
 
     /**
