@@ -187,7 +187,7 @@ public class RegisterActivity extends AppCompatActivity {
      * Launches the MainViewActivity Intent.
      */
     private void updateUI() {
-        Intent intent = new Intent(this, AddVehicleActivity.class);
+        Intent intent = new Intent(this, MainViewActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         overridePendingTransition(R.anim.slide_from_left,R.anim.slide_to_right);

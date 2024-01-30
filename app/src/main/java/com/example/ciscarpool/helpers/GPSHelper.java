@@ -8,7 +8,6 @@ import android.location.Location;
 import android.location.LocationManager;
 import androidx.core.app.ActivityCompat;
 
-import com.example.ciscarpool.activities.LoginActivity;
 import com.google.android.gms.maps.model.LatLng;
 import java.util.List;
 
