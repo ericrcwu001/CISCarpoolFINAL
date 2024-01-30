@@ -31,12 +31,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * {@link AddLocationToAddVehicle} is for users to confirm a location to associate with their vehicle.
+ * {@link AddLocationToAddVehicleActivity} is for users to confirm a location to associate with their vehicle.
  *
  * @author Eric Wu
  * @version 1.0
  * **/
-public class AddLocationToAddVehicle extends AppCompatActivity implements OnMapReadyCallback {
+public class AddLocationToAddVehicleActivity extends AppCompatActivity implements OnMapReadyCallback {
     private final int padding = dpToPx(75); // default padding to offset from edges of the map in pixels
     private MapView mapView;
     private SearchView searchView;
@@ -75,7 +75,7 @@ public class AddLocationToAddVehicle extends AppCompatActivity implements OnMapR
                             appBundle.getString("com.google.android.geo.WEB_API_KEY");
 
                     // Calling API using Volley
-                    RequestQueue queue = Volley.newRequestQueue(AddLocationToAddVehicle.this);
+                    RequestQueue queue = Volley.newRequestQueue(AddLocationToAddVehicleActivity.this);
                     JsonObjectRequest stateReq = new JsonObjectRequest(Request.Method.GET, url,
                             null, response -> {
                                 JSONObject location;
@@ -106,13 +106,13 @@ public class AddLocationToAddVehicle extends AppCompatActivity implements OnMapR
                                         map.moveCamera(cu);
                                     }
                                 } catch (JSONException e1) {
-                                    Toast.makeText(AddLocationToAddVehicle.this,
+                                    Toast.makeText(AddLocationToAddVehicleActivity.this,
                                             "Something went wrong.",
                                             Toast.LENGTH_SHORT).show();
                                 }
                             }, error -> {
                                 Log.d("VolleyError.Response", error.toString());
-                                Toast.makeText(AddLocationToAddVehicle.this,
+                                Toast.makeText(AddLocationToAddVehicleActivity.this,
                                         "Something went wrong.",
                                         Toast.LENGTH_SHORT).show();
                             });
@@ -128,7 +128,7 @@ public class AddLocationToAddVehicle extends AppCompatActivity implements OnMapR
             }
         });
 
-        mapView.getMapAsync(AddLocationToAddVehicle.this);
+        mapView.getMapAsync(AddLocationToAddVehicleActivity.this);
     }
 
     /**

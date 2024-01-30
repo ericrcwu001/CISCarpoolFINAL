@@ -292,7 +292,7 @@ public class AddVehicleActivity extends AppCompatActivity {
      * @param view passed by the onClick property of the Button View.
      */
     public void insertLocation(View view) {
-        Intent intent = new Intent(this, AddLocationToAddVehicle.class);
+        Intent intent = new Intent(this, AddLocationToAddVehicleActivity.class);
         addLocationToAddVehicleLauncher.launch(intent);
     }
 }
