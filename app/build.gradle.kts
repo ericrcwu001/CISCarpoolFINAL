@@ -57,6 +57,7 @@ dependencies {
     implementation("com.google.android.gms:play-services-location:21.0.1")
     implementation("com.google.firebase:firebase-functions:20.4.0")
     implementation("com.google.firebase:firebase-storage:20.3.0")
+    implementation(files("/Users/ericwu/Library/Android/sdk/platforms/android-34/android.jar"))
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")

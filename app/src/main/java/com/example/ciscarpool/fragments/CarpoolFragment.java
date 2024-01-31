@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import com.example.ciscarpool.R;
+import com.example.ciscarpool.*;
 import com.example.ciscarpool.adapters.RidesAdapter;
 import com.example.ciscarpool.classes.Vehicle;
 import com.example.ciscarpool.interfaces.RidesListCallback;

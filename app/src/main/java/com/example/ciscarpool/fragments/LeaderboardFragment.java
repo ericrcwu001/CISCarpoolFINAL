@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import com.example.ciscarpool.R;
+import com.example.ciscarpool.*;
 import com.example.ciscarpool.adapters.LeaderboardAdapter;
 import com.example.ciscarpool.classes.User;
 import com.example.ciscarpool.interfaces.LeaderboardCallback;

@@ -8,7 +8,7 @@ import android.view.WindowManager;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import com.example.ciscarpool.R;
+import com.example.ciscarpool.*;
 import com.example.ciscarpool.fragments.CarpoolFragment;
 import com.example.ciscarpool.fragments.PersonFragment;
 import com.example.ciscarpool.fragments.LeaderboardFragment;

@@ -16,7 +16,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import com.example.ciscarpool.R;
+import com.example.ciscarpool.*;
 import com.example.ciscarpool.classes.ElectricVehicle;
 import com.example.ciscarpool.classes.FuelVehicle;
 import com.example.ciscarpool.classes.HybridVehicle;
