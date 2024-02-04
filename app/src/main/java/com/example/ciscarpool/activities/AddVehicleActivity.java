@@ -52,7 +52,7 @@ public class AddVehicleActivity extends AppCompatActivity {
     private ActivityResultLauncher<PickVisualMediaRequest> pickMedia;
     private boolean checkIfImgPicked;
     private boolean checkIfLocationPicked;
-    private ArrayList<Double> latLng;
+    private ArrayList<Double> latLngList;
     private ActivityResultLauncher<Intent> addLocationToAddVehicleLauncher;
 
     /**
@@ -86,7 +86,7 @@ public class AddVehicleActivity extends AppCompatActivity {
         vehicleChoices = findViewById(R.id.vehicleChoices);
         checkIfImgPicked = false;
         checkIfLocationPicked = false;
-        latLng = new ArrayList<>();
+        latLngList = new ArrayList<>();
 
         // Setting up Firestore
         firestore = FirebaseFirestore.getInstance();
@@ -123,9 +123,9 @@ public class AddVehicleActivity extends AppCompatActivity {
                     if (intent != null) {
                         Bundle data = intent.getExtras();
                         checkIfLocationPicked = true;
-                        latLng.add(data.getDouble("lat"));
-                        latLng.add(data.getDouble("lng"));
-                        Log.d("latlng", latLng.toString());
+                        latLngList.add(data.getDouble("lat"));
+                        latLngList.add(data.getDouble("lng"));
+                        Log.d("latlng", latLngList.toString());
                         locationBtn.setCompoundDrawablesWithIntrinsicBounds(
                                 getDrawable(R.drawable.location), null,
                                 getDrawable(R.drawable.tick), null);
@@ -203,7 +203,7 @@ public class AddVehicleActivity extends AppCompatActivity {
         if (vehicleString.equals("Fuel Vehicle")) {
             FuelVehicle vehicle = new FuelVehicle(mAuth.getCurrentUser().getUid().toString(),
                     carModelString, seatingCapacityString, vehicleUniqueId, new ArrayList<>(),
-                    true, pricePerRideString, uriString, latLng);
+                    true, pricePerRideString, uriString, latLngList);
             firestore.collection("vehicles").document(vehicle.getVehicleID())
                     .set((Vehicle) vehicle);
 
@@ -214,7 +214,7 @@ public class AddVehicleActivity extends AppCompatActivity {
         } else if (vehicleString.equals("Hybrid Vehicle")) {
             HybridVehicle vehicle = new HybridVehicle(mAuth.getCurrentUser().getUid().toString(),
                     carModelString, seatingCapacityString, vehicleUniqueId, new ArrayList<>(),
-                    true, pricePerRideString, uriString, latLng);
+                    true, pricePerRideString, uriString, latLngList);
             firestore.collection("vehicles").document(vehicle.getVehicleID())
                     .set((Vehicle) vehicle);
 
@@ -224,7 +224,7 @@ public class AddVehicleActivity extends AppCompatActivity {
         } else {
             ElectricVehicle vehicle = new ElectricVehicle(mAuth.getCurrentUser().getUid().toString(),
                     carModelString, seatingCapacityString, vehicleUniqueId, new ArrayList<>(),
-                    true, pricePerRideString, uriString, latLng);
+                    true, pricePerRideString, uriString, latLngList);
             firestore.collection("vehicles").document(vehicle.getVehicleID())
                     .set((Vehicle) vehicle);
 

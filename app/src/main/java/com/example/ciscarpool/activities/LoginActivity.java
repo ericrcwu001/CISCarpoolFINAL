@@ -1,6 +1,7 @@
 package com.example.ciscarpool.activities;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
@@ -19,7 +20,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
  * **/
 public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
-    private FirebaseFirestore firestore;
     private EditText emailAddress;
     private EditText password;
 
@@ -27,8 +27,8 @@ public class LoginActivity extends AppCompatActivity {
      * Start of the activity lifecycle. Setup + assigns click listeners to buttons.
      */
     @Override
-    protected void onStart() {
-        super.onStart();
+    protected void onCreate(Bundle savedInstance) {
+        super.onCreate(savedInstance);
         setContentView(R.layout.activity_login);
 
         hideStatusBar();
@@ -41,7 +41,6 @@ public class LoginActivity extends AppCompatActivity {
     private void elementsSetUp() {
         emailAddress = findViewById(R.id.emailAddress);
         password = findViewById(R.id.password);
-        firestore = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
     }
 

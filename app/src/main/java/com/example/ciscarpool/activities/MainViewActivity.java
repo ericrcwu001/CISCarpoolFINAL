@@ -28,7 +28,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 public class MainViewActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
     BottomNavigationView bottomNavigationView;
     private static int page = 0;
-    private FirebaseFirestore firestore;
     private FirebaseAuth mAuth;
 
     /**
@@ -45,7 +44,6 @@ public class MainViewActivity extends AppCompatActivity implements BottomNavigat
         hideStatusBar();
 
         mAuth = FirebaseAuth.getInstance();
-        firestore = FirebaseFirestore.getInstance();
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
         bottomNavigationView.setSelectedItemId(R.id.person);

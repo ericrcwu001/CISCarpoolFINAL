@@ -91,12 +91,11 @@ public class LeaderboardFragment extends Fragment {
             for (QueryDocumentSnapshot queryDocumentSnapshot : queryDocumentSnapshots) {
                 User user = queryDocumentSnapshot.toObject(User.class);
                 mUsers.add(user);
-
-                // Sorting based on total carbon saved
-                mUsers.sort((a, b) -> (-1)*Double.compare(a.getKiloCarbonSaved(), b.getKiloCarbonSaved()));
-
-                callback.leaderboardCallback(mUsers);
             }
+            // Sorting based on total carbon saved
+            mUsers.sort((a, b) -> (-1)*Double.compare(a.getKiloCarbonSaved(), b.getKiloCarbonSaved()));
+
+            callback.leaderboardCallback(mUsers);
         });
 
     }

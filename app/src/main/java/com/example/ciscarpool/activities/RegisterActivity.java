@@ -42,7 +42,6 @@ public class RegisterActivity extends AppCompatActivity {
     private MaterialButton uploadBtn;
     private EditText firstName, lastName, emailAddress, password;
     private ActivityResultLauncher<PickVisualMediaRequest> pickMedia;
-    private boolean checkIfImgPicked;
     private Uri selectedUri;
 
     /**
@@ -77,13 +76,11 @@ public class RegisterActivity extends AppCompatActivity {
         // Setting up Firestore and Authentication
         firestore = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
-        checkIfImgPicked = false;
 
         // Setting up image picker
         pickMedia =
                 registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), uri -> {
                     if (uri != null) {
-                        checkIfImgPicked = true;
                         Log.d("PhotoPicker", "Selected URI: " + uri);
 
                         int flag = Intent.FLAG_GRANT_READ_URI_PERMISSION;
@@ -94,7 +91,6 @@ public class RegisterActivity extends AppCompatActivity {
                                 getDrawable(R.drawable.share), null,
                                 getDrawable(R.drawable.tick), null);
                     } else {
-                        checkIfImgPicked = false;
                         Log.d("PhotoPicker", "No media selected");
                         uploadBtn.setCompoundDrawablesWithIntrinsicBounds(
                                 getDrawable(R.drawable.share), null,
